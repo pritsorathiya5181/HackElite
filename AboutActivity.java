@@ -39,38 +39,38 @@ public class AboutActivity extends Activity {
     {
         if(R.id.textView_linkedin== view.getId())
         {
-            String url = "https://www.linkedin.com/in/sourav-soni-b4875793?trk=nav_responsive_tab_profile_pic";
+            String url = "https://www.linkedin.com/in/prit-sorathiya-776374169";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
         }
         if(R.id.textView_facebook== view.getId())
         {
-            String url = "https://www.facebook.com/sourav.soni.77";
+            String url = "https://www.facebook.com/profile.php?id=100006215479144";
             Intent i = new Intent(Intent.ACTION_VIEW);
             i.setData(Uri.parse(url));
             startActivity(i);
         }
 
 
-        if(R.id.textView_twitter== view.getId())
-        {
-            String url = "https://twitter.com/souravsonirjit9";
-            Intent i = new Intent(Intent.ACTION_VIEW);
-            i.setData(Uri.parse(url));
-            startActivity(i);
-        }
-
-
-        if(R.id.textView_playstore== view.getId())
-        {
-            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
-            try {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
-            } catch (android.content.ActivityNotFoundException anfe) {
-                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
-            }
-        }
+//        if(R.id.textView_twitter== view.getId())
+//        {
+//            String url = "https://twitter.com/souravsonirjit9";
+//            Intent i = new Intent(Intent.ACTION_VIEW);
+//            i.setData(Uri.parse(url));
+//            startActivity(i);
+//        }
+//
+//
+//        if(R.id.textView_playstore== view.getId())
+//        {
+//            final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+//            try {
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+//            } catch (android.content.ActivityNotFoundException anfe) {
+//                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+//            }
+//        }
 
     }
 

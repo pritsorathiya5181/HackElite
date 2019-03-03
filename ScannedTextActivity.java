@@ -6,6 +6,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 /**
  * Created by sourav on 2/14/2018.
@@ -15,6 +19,8 @@ import android.widget.TextView;
 public class ScannedTextActivity extends Activity {
 
     private ImageView mImageviewBack;
+    DatabaseReference raff;
+    Receipt receipt;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +40,20 @@ public class ScannedTextActivity extends Activity {
             }
         });
         textView.setText(scannedText);
+
+//        receipt = new Receipt();
+//        raff = FirebaseDatabase.getInstance().getReference().child("Receipt");
+//
+//        receipt.setTextBill(textView.getText().toString().trim());
+//        raff.push().setValue(receipt);
+//        Toast.makeText(ScannedTextActivity.this, "Data Inserted", Toast.LENGTH_SHORT).show();
+        textView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Toast.makeText(ScannedTextActivity.this, "Enable", Toast.LENGTH_SHORT).show();
+                startActivity(new Intent(ScannedTextActivity.this,Manual_add.class));
+            }
+        });
     }
 
     @Override
@@ -43,4 +63,5 @@ public class ScannedTextActivity extends Activity {
         Intent intent = new Intent(ScannedTextActivity.this, RecorgnizeTextActivity.class);
         startActivity(intent);
     }
+
 }

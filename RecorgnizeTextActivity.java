@@ -9,6 +9,7 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -22,6 +23,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.google.gson.Gson;
 import com.microsoft.projectoxford.vision.VisionServiceClient;
 import com.microsoft.projectoxford.vision.VisionServiceRestClient;
@@ -72,6 +80,15 @@ public class RecorgnizeTextActivity extends AppCompatActivity implements Connect
     private VisionServiceClient client;
 
     private static final int PERMISSION_REQUEST_CODE = 200;
+    Uri filePath;
+    private static int i=5,j;
+    DatabaseReference reff;
+    Receipt receipt;
+
+
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    StorageReference storageRef = storage.getReferenceFromUrl("gs://bestocr-master.appspot.com/");
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -166,7 +183,7 @@ public class RecorgnizeTextActivity extends AppCompatActivity implements Connect
                 if (resultCode == RESULT_OK) {
                     // If image is selected successfully, set the image URI and bitmap.
                     mImageUri = data.getData();
-
+                    filePath = data.getData();
                     mBitmap = ImageHelper.loadSizeLimitedBitmapFromUri(
                             mImageUri, getContentResolver());
                     if (mBitmap != null) {
@@ -199,11 +216,12 @@ public class RecorgnizeTextActivity extends AppCompatActivity implements Connect
         //mTextview.setTextColor(Color.RED);
 
         try {
-
+            upload();
             pdia = new ProgressDialog(this);
             pdia.setMessage("Loading...");
             pdia.show();
             pdia.setCancelable(false);
+
 
             new RecorgnizeTextActivity.doRequest().execute();
         } catch (Exception e) {
@@ -316,6 +334,30 @@ public class RecorgnizeTextActivity extends AppCompatActivity implements Connect
         }
 
 
+    }
+    public void upload(){
+        if(filePath != null) {
+            i++;
+            StorageReference childRef = storageRef.child("ph"+i+".png");
+            UploadTask uploadTask = childRef.putFile(filePath);
+
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+
+                    Toast.makeText(RecorgnizeTextActivity.this, "Upload successful", Toast.LENGTH_SHORT).show();
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+
+                    Toast.makeText(RecorgnizeTextActivity.this, "Upload Failed -> " + e, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+        else {
+            Toast.makeText(RecorgnizeTextActivity.this, "Select an image", Toast.LENGTH_SHORT).show();
+        }
     }
 }
 
